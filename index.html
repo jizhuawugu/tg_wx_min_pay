@@ -1,10 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>微信支付唤起</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script>
+        function openWeixin() {
+            // 延迟唤起
+            setTimeout(() => {
+                window.location.href = "weixin://dl/business/?t=Z7q8VkVh9qu";
+            }, 100);
+        }
+    </script>
 </head>
-<body>
-
+<body onload="openWeixin()">
+<h2>正在唤起微信支付...</h2>
+<p>若未自动跳转，请手动点击按钮：</p>
+<a href="weixin://dl/business/?t=Z7q8VkVh9qu"
+   style="display:inline-block;padding:12px 24px;background:#1AAD19;color:white;text-decoration:none;border-radius:5px;">
+    前往微信支付
+</a>
 </body>
 </html>
