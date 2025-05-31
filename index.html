@@ -1,42 +1,49 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-    <meta charset="UTF-8">
-    <title>微信支付唤起</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script>
-        function getTargetUrl() {
-            const query = window.location.search.substring(1);
-            const decoded = decodeURIComponent(query);
-            return decoded.startsWith("weixin://") ? decoded : null;
+    <meta charset="UTF-8" />
+    <title>微信唤起跳转</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
         }
-
-        function openWeixin() {
-            const url = getTargetUrl();
-            if (url) {
-                // 延迟唤起
-                setTimeout(() => {
-                    window.location.href = url;
-                }, 100);
-            }
+        a {
+            display: inline-block;
+            background-color: #1AAD19;
+            color: white;
+            padding: 12px 24px;
+            font-size: 18px;
+            border-radius: 5px;
+            text-decoration: none;
         }
-    </script>
+    </style>
 </head>
-<body onload="openWeixin()">
-<h2>正在唤起微信支付...</h2>
-<p>若未自动跳转，请手动点击按钮：</p>
-<a id="manualLink"
-   href="#"
-   style="display:inline-block;padding:12px 24px;background:#1AAD19;color:white;text-decoration:none;border-radius:5px;">
-    前往微信支付
-</a>
+<body>
+<h2>点击下方按钮唤起微信支付</h2>
+<a id="jumpLink" href="#">唤起微信</a>
 
 <script>
+    function getTargetUrl() {
+        // 兼容 hash 模式 Vue 路由
+        const hash = window.location.hash; // e.g. #/jump?target=xxx
+        const queryIndex = hash.indexOf('?');
+        if (queryIndex === -1) return null;
+
+        const queryString = hash.slice(queryIndex + 1);
+        const params = new URLSearchParams(queryString);
+        const target = params.get('target');
+        return target ? decodeURIComponent(target) : null;
+    }
+
     const target = getTargetUrl();
-    if (target) {
-        document.getElementById("manualLink").href = target;
+    if (target && target.startsWith('weixin://')) {
+        const link = document.getElementById('jumpLink');
+        link.href = target;
     } else {
-        document.getElementById("manualLink").innerText = "无效链接";
+        document.getElementById('jumpLink').innerText = '无效链接';
     }
 </script>
 </body>
